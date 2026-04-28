@@ -1,0 +1,23 @@
+{
+  "name": "ecommerce-application-project",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.22.1",
+    "express-fileupload": "^1.5.2",
+    "express-handlebars": "^8.0.5",
+    "express-session": "^1.19.0",
+    "hbs": "^4.2.0",
+    "http-errors": "~1.6.3",
+    "mongodb": "^7.1.0",
+    "mongoose": "^9.2.2",
+    "morgan": "^1.10.1",
+    "promise": "^8.3.0"
+  }
+}
