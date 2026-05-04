@@ -91,8 +91,14 @@ res.redirect('/signup')
 
 router.get('/cart', verifyLogin,async(req,res)=>{
   let products=await userHelpers.getCartProducts(req.session.user._id)
+  if (products) {
+    products.forEach(p => {
+      p.isQuantityOne = p.quantity === 1;
+    });
+  }
+  let cartCount=await userHelpers.getCartCount(req.session.user._id);
   console.log(products);
-  res.render('users/cart',{products,user:req.session.user})
+  res.render('users/cart',{products,user:req.session.user,cartCount})
 })
 
 
@@ -110,7 +116,20 @@ router.get('/add-to-cart/:id',(req,res)=>{
 
 
 })
+router.post('/change-product-quantity',(req,res, next)=>{
+userHelpers.changeProductQuantity(req.body). then((response)=>{
+
+  res.json({status:true})
+  
+})
+
+})
 
 
+router.post('/remove-from-cart', (req, res, next) => {
+  userHelpers.removeProduct(req.body).then((response) => {
+    res.json(response);
+  })
+})
 
 module.exports = router;

@@ -63,7 +63,7 @@ module.exports = {
                 if(proExist!=-1)
                 {
                     db.get().collection(collection.CART_COLLECTION)
-                    .updateOne({ 'product.item': new objectId(proId)},
+                    .updateOne({ user:objectId(userId),'product.item': new objectId(proId)},
                 {
 
                     $inc:{'product.$.quantity':1}
@@ -133,6 +133,13 @@ module.exports = {
 
                    
 
+                },
+                {
+                    $project:
+                    {
+                        item:1, quantity:1,  product:{$arrayElemAt:['$product',0]}
+                    
+                    }
                 }
 
 
@@ -179,7 +186,48 @@ return new Promise(async(resolve,reject) =>{
   
         resolve(count)
     })
-}
+},
+
+changeProductQuantity:(details)=>{
+    details.count=parseInt(details.count)
+    return new Promise((resolve, reject)=>{
+    db.get().collection(collection.CART_COLLECTION)
+                    .updateOne({ _id:objectId(details.cart),'products.item': new objectId(details.product)},
+                {
+
+                    $inc:{'products.$.quantity':details.count}
+                }).then((response)=>{
+                   resolve(response)
+                })
+
+
+    })
+
+
+
+
+
+},
+
+
+removeFromCart: (details) => {
+  return new Promise((resolve, reject) => {
+
+    db.get().collection(collection.CART_COLLECTION)
+      .updateOne(
+        { _id: objectId(details.cart) },
+        {
+          $pull: {
+            products: {
+              item: objectId(details.product)
+            }
+          }
+        }
+      )
+      .then(() => {
+        resolve({ status: true })
+      })
+    })
 
 }
 
@@ -191,4 +239,4 @@ return new Promise(async(resolve,reject) =>{
 
 
 
-
+}
