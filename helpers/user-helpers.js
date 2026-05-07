@@ -58,15 +58,15 @@ module.exports = {
             return new Promise(async(resolve,reject)=>{
             let userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: new objectId(userId) });
             if (userCart) {
-                let proExist=userCart.products.findIndex(product=>product.item===proId)
+                let proExist=userCart.products.findIndex(product=>product.item==proId)
                 console.log(proExist)
                 if(proExist!=-1)
                 {
                     db.get().collection(collection.CART_COLLECTION)
-                    .updateOne({ user:objectId(userId),'product.item': new objectId(proId)},
+                    .updateOne({ user: new objectId(userId),'products.item': new objectId(proId)},
                 {
 
-                    $inc:{'product.$.quantity':1}
+                    $inc:{'products.$.quantity':1}
                 }).then(()=>{
                    resolve()
                 })
@@ -178,12 +178,8 @@ return new Promise(async(resolve,reject) =>{
     let cart=await db.get().collection(collection.CART_COLLECTION).findOne({user:new objectId(userId)})
     if(cart)
     {
-     
-          count=cart.products.length
-
+        count = cart.products.reduce((acc, product) => acc + product.quantity, 0)
     }
-
-  
         resolve(count)
     })
 },
@@ -192,7 +188,7 @@ changeProductQuantity:(details)=>{
     details.count=parseInt(details.count)
     return new Promise((resolve, reject)=>{
     db.get().collection(collection.CART_COLLECTION)
-                    .updateOne({ _id:objectId(details.cart),'products.item': new objectId(details.product)},
+                    .updateOne({ _id:new objectId(details.cart),'products.item': new objectId(details.product)},
                 {
 
                     $inc:{'products.$.quantity':details.count}
@@ -215,11 +211,11 @@ removeFromCart: (details) => {
 
     db.get().collection(collection.CART_COLLECTION)
       .updateOne(
-        { _id: objectId(details.cart) },
+        { _id: new objectId(details.cart) },
         {
           $pull: {
             products: {
-              item: objectId(details.product)
+              item: new objectId(details.product)
             }
           }
         }

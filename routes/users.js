@@ -127,7 +127,7 @@ userHelpers.changeProductQuantity(req.body). then((response)=>{
 
 
 router.post('/remove-from-cart', (req, res, next) => {
-  userHelpers.removeProduct(req.body).then((response) => {
+  userHelpers.removeFromCart(req.body).then((response) => {
     res.json(response);
   })
 })
