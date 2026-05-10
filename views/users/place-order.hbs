@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Place Order</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    body{
+      background:#f5f5f5;
+    }
+
+    .order-card{
+      border-radius:15px;
+      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .payment-box{
+      border:1px solid #ddd;
+      border-radius:10px;
+      padding:15px;
+      margin-bottom:10px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .payment-box:hover{
+      background:#f8f9fa;
+    }
+
+    .btn-order{
+      border-radius:30px;
+      padding:10px;
+      font-size:18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container py-5">
+
+  <div class="row">
+
+    <!-- Delivery Details -->
+    <div class="col-lg-7 mb-4">
+      <div class="card order-card p-4">
+
+        <h3 class="mb-4">Delivery Details</h3>
+
+        <form>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-control" placeholder="Enter first name">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-control" placeholder="Enter last name">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" placeholder="Enter email">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" placeholder="Enter phone number">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" rows="3" placeholder="Enter address"></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Pincode</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="col-lg-5">
+
+      <div class="card order-card p-4">
+
+        <h3 class="mb-4">Order Summary</h3>
+
+        <div class="d-flex justify-content-between mb-2">
+          <span>Product Total</span>
+          <span>{{total}}</span>
+        </div>
+
+        <div class="d-flex justify-content-between mb-2">
+          <span>Delivery Charge</span>
+          <span>₹50</span>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+          <span>Total</span>
+          <span>{{grandTotal}}</span>
+        </div>
+
+        <h5 class="mb-3">Payment Method</h5>
+
+        <div class="payment-box">
+          <input type="radio" name="payment" checked>
+          <label class="ms-2">Cash on Delivery</label>
+        </div>
+
+        <div class="payment-box">
+          <input type="radio" name="payment">
+          <label class="ms-2">UPI Payment</label>
+        </div>
+
+        <div class="payment-box">
+          <input type="radio" name="payment">
+          <label class="ms-2">Credit / Debit Card</label>
+        </div>
+
+        <button class="btn btn-success w-100 mt-4 btn-order">
+          Place Order
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -225,6 +225,82 @@ removeFromCart: (details) => {
       })
     })
 
+},
+
+getTotalAmount:(userId)=>{
+  return new Promise(async(resolve,reject)=>{
+             
+             let cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
+            
+                { 
+                    $match: { user: new objectId(userId)}
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
+                    }
+                },
+                {
+                    $lookup:{
+                        from:collection.PRODUCT_COLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+
+                    }
+
+
+                   
+
+                },
+                {
+                    $project:
+                    {
+                        item:1, quantity:1,  product:{$arrayElemAt:['$product',0]}
+                    
+                    }
+                },
+                {
+                   $group:{
+                    _id:null,
+                    total:{$sum:{$multiply:['$quantity', { $toDouble:'$product.Price'}]}}
+                   }
+                }
+
+               /*  {
+
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        let: {prodList:'$products'},
+                       pipeLine:[
+                        {
+                             $match:{
+                             $expr:{
+                                $in:['$_id', "$$prodList"]
+                             }
+                       }
+                        
+                    }
+             ],
+             as:'cartItems'
+            }
+        }
+ */
+            ]).toArray()
+            if (cartItems.length > 0) {
+                console.log(cartItems[0].total);
+                resolve(cartItems[0].total)
+            } else {
+                resolve(0)
+            }
+        })
+        
+    
+}
 }
 
 
@@ -235,4 +311,8 @@ removeFromCart: (details) => {
 
 
 
-}
+
+
+
+
+
