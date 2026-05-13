@@ -300,7 +300,56 @@ getTotalAmount:(userId)=>{
         })
         
     
+},
+
+
+
+placeOrder:(order,products,total)=>{
+    return new Promise((resolve,reject)=>{
+    console.log(order,products,total);
+  
+    let status=order['payment']==='COD'?'placed':'pending'
+    let orderObj={
+        deliveryDetails:{
+            name:order.fname,
+            mobile:order.phone,
+            address:order.email
+
+        },
+        userId:new objectId(order.userid),
+        paymentMethod:order['payment'],
+        products:products,
+        totalAmount:total,
+        status:status,
+        date:new Date()
+
+    }
+      
+  db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
+  db.get().collection(collection.CART_COLLECTION).deleteOne({user:new objectId(order.userid)})  
+
+   resolve()
+  
+
+  })
+
+
+    })
+    
+},
+getCartProductList:(userId)=>{
+return new Promise(async(resolve,reject)=>{
+let cart=await db.get().collection(collection.CART_COLLECTION).findOne({user:new objectId(userId)})
+if(cart)
+{
+
+console.log(cart);
+resolve(cart.products)
 }
+})
+
+}
+
 }
 
 

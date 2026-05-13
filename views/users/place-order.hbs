@@ -54,54 +54,40 @@
 
         <h3 class="mb-4">Delivery Details</h3>
 
-        <form>
+        <form action=""  id="checkout-form">
 
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control" placeholder="Enter first name">
+              <input type="text"    name="fname" class="form-control"    placeholder="Enter first name" >
             </div>
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Last Name</label>
-              <input type="text" class="form-control" placeholder="Enter last name">
+              <input type="text"  name="lname" class="form-control" placeholder="Enter last name" value="">
             </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-control" placeholder="Enter email">
+            <input type="email"  name="email" class="form-control" placeholder="Enter email" value="">
           </div>
 
           <div class="mb-3">
             <label class="form-label">Phone Number</label>
-            <input type="text" class="form-control" placeholder="Enter phone number">
+            <input type="text" name="phone" class="form-control" placeholder="Enter phone number" value="">
+          
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Address</label>
-            <textarea class="form-control" rows="3" placeholder="Enter address"></textarea>
+          <input type="text" id="" name="userid" value="{{user._id}}" hidden>
+
           </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">City</label>
-              <input type="text" class="form-control">
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Pincode</label>
-              <input type="text" class="form-control">
-            </div>
-          </div>
-
-        </form>
 
       </div>
     </div>
 
     <!-- Order Summary -->
-    <div class="col-lg-5">
+    <div class="col-12 F">
 
       <div class="card order-card p-4">
 
@@ -127,23 +113,26 @@
         <h5 class="mb-3">Payment Method</h5>
 
         <div class="payment-box">
-          <input type="radio" name="payment" checked>
+          <input type="radio" name="payment" value="COD">
           <label class="ms-2">Cash on Delivery</label>
         </div>
 
-        <div class="payment-box">
+       <!-- <div class="payment-box">
           <input type="radio" name="payment">
-          <label class="ms-2">UPI Payment</label>
-        </div>
+          <label class="ms-2">COD</label>
+        </div> -->
 
         <div class="payment-box">
-          <input type="radio" name="payment">
-          <label class="ms-2">Credit / Debit Card</label>
+          <input type="radio" name="payment" value="UPI">
+          <label class="ms-2">UPI PAYMENT</label>
         </div>
 
-        <button class="btn btn-success w-100 mt-4 btn-order">
+        <button class="btn btn-success w-100 mt-4 btn-order" type="submit">
           Place Order
         </button>
+        </div>
+        </form>
+
 
       </div>
 
@@ -155,3 +144,21 @@
 
 </body>
 </html>
+
+
+<script>
+$("#checkout-form").submit((e)=>{
+  e.preventDefault()
+
+  $.ajax({
+   
+   url:'/place-order',
+   method:'post',
+   data:$('#checkout-form').serialize(),
+   success:(response)=>{
+    alert(response)
+   }
+
+  })
+})
+</script>
