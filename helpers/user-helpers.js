@@ -308,7 +308,7 @@ placeOrder:(order,products,total)=>{
     return new Promise((resolve,reject)=>{
     console.log(order,products,total);
   
-    let status=order['payment']==='COD'?'placed':'pending'
+    let status=order['payment-method']==='COD'?'placed':'pending'
     let orderObj={
         deliveryDetails:{
             name:order.fname,
@@ -317,7 +317,7 @@ placeOrder:(order,products,total)=>{
 
         },
         userId:new objectId(order.userid),
-        paymentMethod:order['payment'],
+        paymentMethod:order['payment-method'],
         products:products,
         totalAmount:total,
         status:status,
@@ -347,6 +347,16 @@ console.log(cart);
 resolve(cart.products)
 }
 })
+
+},
+getUserOrders:(userId)=>{
+
+    return new Promise(async(resolve,reject)=>{
+     
+    let orders=await db.get().collection(collection.ORDER_COLLECTION).find({userId:new objectId(userId)}).toArray()
+    console.log(orders);
+    resolve(orders);
+    })
 
 }
 

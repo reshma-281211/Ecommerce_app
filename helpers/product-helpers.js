@@ -1,11 +1,12 @@
 var db = require('../config/connection')
-var collection=require('../config/collection')
-var ObjectId=require('mongodb').ObjectId
+var collection=require('../config/collection');
+const { reject } = require('promise');
+var objectID=require('mongodb').ObjectID
 module.exports = {
     addProduct: (product, callback) => {
         console.log("Adding product:", product);
 
-        db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data)=>
+        db.get().collection('product').insertOne(product).then((data)=>
         {
             console.log(data);
             callback(data.insertedId)
@@ -18,36 +19,74 @@ module.exports = {
         resolve(products)
         })
     },
-    deleteProduct:(proId)=>{
+
+    deleteProduct:(prodId)=>{
+  
+    return new Promise((resolve, reject)=>{
+    db.get.collection(collection.PRODUCT_COLLECTION).removeOne({_id:prodID}).then((response)=>{
+        console.log(response)
+        resolve(response)
+    })
+
+    })
+
+
+
+    },
+    
+    getProductDetails:(prodID)=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({_id:new ObjectId(proId)}).then((response)=>{
-                console.log(response);
-                resolve(response)
-            })
+        db.get.collection(collection.PRODUCT_COLLECTION).findOne({id:prodID}).then((response)=>{
+
+        resolve(response)
+
+        })
         })
     },
-    getProductDetails:(proId)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:new ObjectId(proId)}).then((product)=>{
-                resolve(product)
-            })
-        })
-    },
-    updateProduct:(proId, productDetails)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:new ObjectId(proId)},{
-                $set:{
-                    Name:productDetails.Name,
-                    Description:productDetails.Description,
-                    Price:productDetails.Price,
-                    Category:productDetails.Category
-                }
-            }).then((response)=>{
-                resolve()
-            })
-        })
+
+    updateProduct:(prodId,proDetails)=>{
+
+    return new Promise((resolve,reject)=>{
+    db.get.collection(collection.PRODUCT_COLLECTION).updateOne({_id:prodID},{
+        $set:{
+         Name:proDetails.Name,
+         Description:proDetails.Description,
+         Price:proDetails.Price,
+         Category:proDetails.Category
+        }
+    }).then((response)=>{
+
+     resolve(response)
+    })
+    })
+    
+
+    
+getCartCount:(userId)=>{
+
+return new Promise(async(resolve,reject) =>{
+    let count=0 
+    let cart=await db.get().collection(collection.CART_COLLECTION).findOne({user:objectID(userID)})
+    if(cart)
+    {
+     
+          count=cart.products.length
+
     }
+
+    resolve(count)
+})
+
+}
+
     }
+}
+    
+
+
+
+
+    
 
         
         /*Name: product.Name,
